@@ -1,0 +1,31 @@
+To-Do:
+- Add task tracking functionality
+	- Remove completed tasks
+	- Show a progress par
+
+- Timetable maker
+	- Needs user to add availability
+	- Availability to be reflected in time table
+	- Option to update timetable
+	- Timetable should account for all projects
+	
+- Project manager
+	- Projects should have "importance" attribute added
+		- Attrib. should influence algorithm for time table maker
+	- Add selection/edit feature for project data in the table
+
+- UI
+	- Improve UI design/appearance
+
+
+Completed tasks:
+- Add simple GUI with menu
+- Add functionality to create project files
+	- Name project
+	- Add deadline
+	- Add description
+	- Add tasks (as list)
+- Add functionality to load project files
+	- Show loaded projects in a table
+	- Update the table when new projects are loaded
+- 
