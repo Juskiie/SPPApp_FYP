@@ -39,6 +39,7 @@ public class ProjectHelper implements ActionListener {
     {
         try
         {
+            CreateProjectForm newForm = new CreateProjectForm(window);
             String projectName = JOptionPane.showInputDialog("Enter project name:");
             if(projectName == null)
             {

@@ -14,10 +14,12 @@ public class CreateProjectForm extends JFrame {
     private JButton submitButton;
     private JButton cancelButton;
     private ProjectHelper helper = new ProjectHelper();
+    private final DefaultWindow window;
 
-    public CreateProjectForm(String createNewProject)
+    public CreateProjectForm(DefaultWindow window)
     {
         // Set up the form components
+        this.window = window;
         projectNameField = new JTextField();
         projectDescriptionField = new JTextField();
         deadlineChooser = new JDateChooser();
