@@ -37,54 +37,7 @@ public class ProjectHelper implements ActionListener {
 
     public void createProject()
     {
-        try
-        {
-            String projectName = JOptionPane.showInputDialog("Enter project name:");
-            if(projectName == null)
-            {
-                throw new InvalidFilenameException("InvalidFilenameException: Project name cannot be null!");
-            }
-            String projectDescription = JOptionPane.showInputDialog("Enter a brief description of the project:");
-            Date deadline = showDeadlineDialog();
-            ArrayList<Task> tasks = showTaskInputDialog();
-            Project project = new Project(projectName, projectDescription, deadline, tasks);
-            saveProject(project);
-        }
-        catch (InvalidFilenameException e)
-        {
-            System.err.println("Filename entered must not be null! Setting to default value");
-            e.printStackTrace();
-        }
-    }
-
-    private Date showDeadlineDialog()
-    {
-        JDateChooser deadlineChooser = new JDateChooser();
-        int option = JOptionPane.showConfirmDialog(null, deadlineChooser, "Select deadline", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            return deadlineChooser.getDate();
-        }
-        return null;
-    }
-
-    private ArrayList<Task> showTaskInputDialog()
-    {
-        JTextField taskInput = new JTextField();
-        int option = JOptionPane.showConfirmDialog(null, new JScrollPane(taskInput), "Enter task (press cancel when finished adding tasks)", JOptionPane.OK_CANCEL_OPTION);
-        while(option == JOptionPane.OK_OPTION)
-        {
-            parseTasks(taskInput.getText());
-            taskInput = new JTextField();
-            option = JOptionPane.showConfirmDialog(null, new JScrollPane(taskInput), "Enter task (press cancel when finished adding tasks)", JOptionPane.OK_CANCEL_OPTION);
-
-            if(option == JOptionPane.CANCEL_OPTION)
-            {
-                return tasks;
-            }
-        }
-
-
-        return null;
+        new CreateProjectForm(window);
     }
 
     public void loadProject(File file)
@@ -113,50 +66,28 @@ public class ProjectHelper implements ActionListener {
             {
                 Project project = (Project) obj;
                 project_list.add(project);
-                List<Task> tasks = project.getTasks();
-                @SuppressWarnings(value = "MismatchedReadAndWriteOfArray") // It is used, IDE can't see that though
-                String[] columnNames = {"Project", "Description", "Deadline", "Tasks"};
-                // It's all objects now
-                @SuppressWarnings(value = "MismatchedReadAndWriteOfArray") // It is used, IDE can't see that though
-                Object[][] data = new Object[1][columnNames.length];
-                Object[][] task_data = new Object[tasks.size()][];
-
-                for (int i = 0; i < tasks.size(); i++) {
-                    Task task = tasks.get(i);
-                    // Extract the relevant information from each task and add it to the data array
-                    task_data[i] = new Object[]{"Task: " + task.getTaskName() + ", Task Duration: ", task.getTaskDuration() + "\n"};
-                }
-
-                for(int i=0;i < 1;i++)
-                {
-                    data[i][0] = project.getProjectTitle();
-                    data[i][1] = project.getProjectDescription();
-                    data[i][2] = project.getDeadline();
-                    data[i][3] = task_data;
-                }
-
                 ProjectTableModel model = new ProjectTableModel(project_list);
 
                 // Check if table already exists
                 if(!isTableEmpty)
                 {
-                    updateTableData(model, project);
+                    model.addProject(project);
+                    window.getPanel().revalidate();
+                    window.getPanel().repaint();
                 }
                 else
                 {
                     // Create new table model with data from Project object
-
-
                     JTable table = new JTable(model);
                     JScrollPane scrollPane = new JScrollPane(table);
 
-                    // window.getPanel().removeAll();
                     window.getPanel().add(scrollPane, BorderLayout.CENTER);
                     window.getPanel().revalidate();
                     window.getPanel().repaint();
                     in.close();
 
                     isTableEmpty = false;
+
                 }
             }
             else
@@ -172,23 +103,16 @@ public class ProjectHelper implements ActionListener {
             System.out.println("File directory is empty!");
             e.printStackTrace();
         }
-    }
-
-    public void updateTableData(ProjectTableModel model, Project obj)
-    {
-        System.out.println("ATTEMPTING TO UPDATE TABLE");
-        model.addProject(obj);
-    }
-
-
-    private void parseTasks(String taskInput) {
-        tasks.add(new Task(taskInput));
+        finally
+        {
+            window.getPanel().repaint();
+            window.getPanel().revalidate();
+        }
     }
 
     public void saveProject(Project project) {
         File projectsDirectory = new File("Projects");
         if (!projectsDirectory.exists()) {
-            //noinspection ResultOfMethodCallIgnored
             projectsDirectory.mkdir();
         }
 

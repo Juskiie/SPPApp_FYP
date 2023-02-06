@@ -37,8 +37,9 @@ public class DefaultWindow extends JFrame{
 
         panel.setLayout(new BorderLayout());
         add(panel);
-
         setJMenuBar(createMenuBar());
+
+        validate();
     }
 
 
