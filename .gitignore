@@ -26,4 +26,4 @@ hs_err_pid*
 *.ser
 
 # Test directory
-/SmartProjectPlanner/target
+/SmartProjectPlanner/target/*.jar
