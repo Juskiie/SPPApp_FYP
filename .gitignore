@@ -24,3 +24,6 @@ hs_err_pid*
 
 # Test files
 *.ser
+
+# Test directory
+/SmartProjectPlanner/target
