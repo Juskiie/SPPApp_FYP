@@ -37,9 +37,12 @@ public class ProjectHelper implements ActionListener {
 
     public void createProject()
     {
+        new CreateProjectForm(window);
+/*
         try
         {
-            CreateProjectForm newForm = new CreateProjectForm(window);
+
+
             String projectName = JOptionPane.showInputDialog("Enter project name:");
             if(projectName == null)
             {
@@ -55,7 +58,7 @@ public class ProjectHelper implements ActionListener {
         {
             System.err.println("Filename entered must not be null! Setting to default value");
             e.printStackTrace();
-        }
+        }*/
     }
 
     private Date showDeadlineDialog()
@@ -72,19 +75,15 @@ public class ProjectHelper implements ActionListener {
     {
         JTextField taskInput = new JTextField();
         int option = JOptionPane.showConfirmDialog(null, new JScrollPane(taskInput), "Enter task (press cancel when finished adding tasks)", JOptionPane.OK_CANCEL_OPTION);
-        while(option == JOptionPane.OK_OPTION)
-        {
+        while(option == JOptionPane.OK_OPTION) {
             parseTasks(taskInput.getText());
             taskInput = new JTextField();
             option = JOptionPane.showConfirmDialog(null, new JScrollPane(taskInput), "Enter task (press cancel when finished adding tasks)", JOptionPane.OK_CANCEL_OPTION);
 
-            if(option == JOptionPane.CANCEL_OPTION)
-            {
+            if (option == JOptionPane.CANCEL_OPTION) {
                 return tasks;
             }
         }
-
-
         return null;
     }
 
