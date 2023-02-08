@@ -3,7 +3,7 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_19" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="19" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: com.toedter:jcalendar:1.4" level="application" />
     <orderEntry type="library" name="flatlaf-3.0" level="application" />
