@@ -5,6 +5,7 @@
  */
 package k2028885.fyp.smartprojectplanner;
 
+
 import com.formdev.flatlaf.FlatDarkLaf;
 
 import java.awt.event.*;
@@ -75,13 +76,14 @@ public class DefaultWindow extends JFrame{
     }
 
     // Start execution here: pass args..
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         try {
             UIManager.setLookAndFeel( new FlatDarkLaf());
         } catch( Exception ex ) {
             System.err.println( "Failed to initialize LaF" );
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
+        System.out.println("Running smart project planner app");
         DefaultWindow frame = new DefaultWindow(); // Create new window on load
         frame.setVisible(true);
     }
