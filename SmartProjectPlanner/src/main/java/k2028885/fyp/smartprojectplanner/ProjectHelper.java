@@ -7,20 +7,26 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ProjectHelper implements ActionListener {
+    private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final DefaultWindow window;
     private final List<Project> project_list = new ArrayList<>();
-    private final ArrayList<Task> tasks = new ArrayList<>();
     private boolean isTableEmpty = true;
 
 
     // * Default
-    public ProjectHelper(DefaultWindow window) {
+    public ProjectHelper(DefaultWindow window)
+    {
         this.window = window;
     }
 
-    public ProjectHelper() { this.window = new DefaultWindow(); }
+    public ProjectHelper()
+    {
+        this.window = new DefaultWindow();
+    }
 
     /*
     * Rest of
@@ -34,7 +40,7 @@ public class ProjectHelper implements ActionListener {
 
     public void createProject()
     {
-        new CreateProjectForm(window);
+        new CreateProjectForm();
     }
 
     public void loadProject(File file)
@@ -45,9 +51,8 @@ public class ProjectHelper implements ActionListener {
             {
                 File[] files = file.listFiles();
                 assert files != null;
-                if(files.length < 1)
-                {
-                    throw(new Exception());
+                if(files.length < 1) {
+                    throw (new AssertionError());
                 }
                 for (File selFile : files)
                 {
@@ -59,16 +64,14 @@ public class ProjectHelper implements ActionListener {
             }
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
             Object obj = in.readObject();
-            if(obj instanceof Project)
+            if(obj instanceof Project project)
             {
-                Project project = (Project) obj;
                 project_list.add(project);
                 ProjectTableModel model = new ProjectTableModel(project_list);
 
                 // Check if table already exists
                 if(!isTableEmpty)
                 {
-                    model.addProject(project);
                     window.getPanel().revalidate();
                     window.getPanel().repaint();
                 }
@@ -92,7 +95,7 @@ public class ProjectHelper implements ActionListener {
                 System.out.println("Expected object of type Project, but got: " + obj.getClass().getName());
             }
         }
-        catch (IOException | ClassNotFoundException e)
+        catch (IOException | ClassNotFoundException | AssertionError e)
         {
             // No file || no class
             e.printStackTrace();
@@ -107,10 +110,11 @@ public class ProjectHelper implements ActionListener {
         }
     }
 
-    public void saveProject(Project project) {
+    public void saveProject(Project project) throws SecurityException{
         File projectsDirectory = new File("Projects");
         if (!projectsDirectory.exists()) {
-            projectsDirectory.mkdir();
+            var mkdir = projectsDirectory.mkdir();
+            LOGGER.log(Level.INFO, "New file/directory created: " + mkdir);
         }
 
         try(FileOutputStream fileOut = new FileOutputStream(new File(projectsDirectory, project.getProjectTitle() + ".ser")))

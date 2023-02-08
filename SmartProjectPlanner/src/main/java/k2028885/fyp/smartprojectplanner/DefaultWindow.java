@@ -12,12 +12,16 @@ import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.*;
 
 /**
  *
  * @author L.Casey Bull
  */
 public class DefaultWindow extends JFrame{
+    // private final static Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final JPanel panel = new JPanel();
 
     public JPanel getPanel() {
@@ -76,15 +80,24 @@ public class DefaultWindow extends JFrame{
     }
 
     // Start execution here: pass args..
-    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException
+    {
+        // Set up logging
+        LogManager logMng = LogManager.getLogManager();
+        Logger log = logMng.getLogger(Logger.GLOBAL_LOGGER_NAME);
+        log.log(Level.INFO, "Logging set up! Running application..");
+
+        // Set up UI and LAF
         try {
             UIManager.setLookAndFeel( new FlatDarkLaf());
         } catch( Exception ex ) {
             System.err.println( "Failed to initialize LaF" );
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
-        System.out.println("Running smart project planner app");
-        DefaultWindow frame = new DefaultWindow(); // Create new window on load
+        log.info("Running smart project planner app");
+
+        // Create new window on load
+        DefaultWindow frame = new DefaultWindow();
         frame.setVisible(true);
     }
 }
