@@ -1,11 +1,9 @@
 package k2028885.fyp.smartprojectplanner;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -13,22 +11,12 @@ public class CreateProjectForm extends JFrame {
     private final JTextField projectNameField;
     private final JTextField projectDescriptionField;
     private final JDateChooser deadlineChooser;
-    private final JTextArea taskListArea;
+    private final List<Task> taskList = new ArrayList<>();
     private final ProjectHelper helper = new ProjectHelper();
 
-    private Map<String, Integer> getTasksFromInput() throws ArrayIndexOutOfBoundsException{
-        Map<String, Integer> tasks = new HashMap<>();
-        String[] taskInputs = taskListArea.getText().split("\n");
 
-        for (String taskInput : taskInputs) {
-            Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-            log.log(Level.INFO, taskInput);
-            String[] taskDetails = taskInput.split(" ");
-            String taskName = taskDetails[0];
-            int taskDuration = Integer.parseInt(taskDetails[1].replaceAll("[^0-9]", ""));
-            tasks.put(taskName, taskDuration);
-        }
-        return tasks;
+    private List<Task> getTasksFromList(){
+        return taskList;
     }
 
     public CreateProjectForm()
@@ -38,10 +26,7 @@ public class CreateProjectForm extends JFrame {
         projectNameField.setVisible(true);
         projectDescriptionField = new JTextField();
         deadlineChooser = new JDateChooser();
-        taskListArea = new JTextArea();
-        taskListArea.setLineWrap(true);
-        taskListArea.setWrapStyleWord(true);
-        taskListArea.setRows(5);
+
         JButton submitButton = new JButton("Submit");
         JButton cancelButton = new JButton("Cancel");
 
@@ -83,16 +68,55 @@ public class CreateProjectForm extends JFrame {
         deadlinePanel.add(deadlineChooser, BorderLayout.CENTER);
         p.add(deadlinePanel);
 
-        // Set project tasks label and panel for components
-        JLabel lTasks = new JLabel(labels[3], JLabel.TRAILING);
-        lTasks.setLabelFor(taskListArea);
-        lTasks.setOpaque(true);
+        // NEW CODE HERE -------------------------------------------------------------------------------------------------------------------------------
+        JTextField taskNameField = new JTextField(5);
+        JSpinner taskDurationSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        JButton addTaskButton = new JButton("Add Task to list");
+        DefaultListModel<String> taskListModel =  new DefaultListModel<>();
+        JList<String> taskListStr = new JList<>(taskListModel);
 
+        // Add action listener to update task list on adding task
+        addTaskButton.addActionListener(e -> {
+            Task task = new Task(taskNameField.getText(), (Integer) taskDurationSpinner.getValue());
+            taskListModel.addElement(task.toString());
+            taskList.add(task);
+        });
+
+        // Task Panel
         JPanel taskPanel = new JPanel();
-        taskPanel.setLayout(new BorderLayout());
-        taskPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
-        taskPanel.add(lTasks, BorderLayout.WEST);
-        taskPanel.add(taskListArea, BorderLayout.CENTER);
+        taskPanel.setLayout(new BoxLayout(taskPanel, BoxLayout.Y_AXIS));
+        JLabel lTask = new JLabel("Task: ", JLabel.TRAILING);
+        lTask.setLabelFor(taskNameField);
+        lTask.setOpaque(true);
+        JPanel nameTaskPanel = new JPanel();
+        nameTaskPanel.setLayout(new BorderLayout());
+        nameTaskPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
+        nameTaskPanel.add(lTask, BorderLayout.WEST);
+        nameTaskPanel.add(taskNameField, BorderLayout.CENTER);
+        taskPanel.add(nameTaskPanel);
+
+        // Task duration
+        JLabel lDuration = new JLabel("Duration (hours): ", JLabel.TRAILING);
+        lDuration.setLabelFor(taskDurationSpinner);
+        lDuration.setOpaque(true);
+        JPanel durationPanel = new JPanel();
+        durationPanel.setLayout(new BorderLayout());
+        durationPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
+        durationPanel.add(lDuration, BorderLayout.WEST);
+        durationPanel.add(taskDurationSpinner, BorderLayout.CENTER);
+        taskPanel.add(durationPanel);
+
+        // Task list panel
+        JLabel lTasks = new JLabel("Project tasks: ", JLabel.TRAILING);
+        lTasks.setLabelFor(taskListStr);
+        lTasks.setOpaque(true);
+        JPanel taskListPanel = new JPanel();
+        taskListPanel.setLayout(new BorderLayout());
+        taskListPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
+        taskListPanel.add(lTasks, BorderLayout.WEST);
+        taskListPanel.add(taskListStr, BorderLayout.CENTER);
+        taskListPanel.add(addTaskButton, BorderLayout.AFTER_LAST_LINE);
+        taskPanel.add(taskListPanel);
         p.add(taskPanel);
 
         JPanel buttonPanel = new JPanel();
@@ -122,27 +146,11 @@ public class CreateProjectForm extends JFrame {
     private void submit()
     {
         // Get the values from the form
-        String projectName = projectNameField.getText();
-        String projectDesc = projectDescriptionField.getText();
-        Date deadline = deadlineChooser.getDate();
-
-        DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Task Description");
-        tableModel.addColumn("Duration");
-
-        // JTable taskTable = new JTable(tableModel);
-        ArrayList<Task> tasks = new ArrayList<>();
-        Map<String, Integer> map = getTasksFromInput();
-
-        for (var entry : map.entrySet())
-        {
-            tasks.add(new Task(entry.getKey(), entry.getValue()));
-        }
-
-        for (Task task : tasks)
-        {
-            tableModel.addRow(new Object[] { task.getTaskName(), task.getTaskDuration() });
-        }
+        String projectName = projectNameField.getText();        // Project name
+        String projectDesc = projectDescriptionField.getText(); // Project description
+        Date deadline = deadlineChooser.getDate();              // Project deadline
+        List<Task> tasksFromList = getTasksFromList();          // Task list
+        System.out.println(tasksFromList);
 
         // Validate the values
         if(projectName.isEmpty())
@@ -153,12 +161,9 @@ public class CreateProjectForm extends JFrame {
         {
             projectDesc = "This is a new project";
         }
-        if(tasks.isEmpty())
-        {
-            tasks = new ArrayList<>();
-        }
 
-        Project proj = new Project(projectName,projectDesc,deadline,tasks);
+        // Save the project to file
+        Project proj = new Project(projectName,projectDesc,deadline,tasksFromList);
         helper.saveProject(proj);
 
         // Close the form

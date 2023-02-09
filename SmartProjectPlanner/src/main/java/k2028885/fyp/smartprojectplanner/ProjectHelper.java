@@ -45,6 +45,7 @@ public class ProjectHelper implements ActionListener {
 
     public void loadProject(File file)
     {
+        // First check for directory or individual file
         try
         {
             if(file.isDirectory())
@@ -62,27 +63,31 @@ public class ProjectHelper implements ActionListener {
                     }
                 }
             }
+
+            // Then load individual files
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
             Object obj = in.readObject();
             if(obj instanceof Project project)
             {
                 project_list.add(project);
                 ProjectTableModel model = new ProjectTableModel(project_list);
+                JTable table = new JTable(model);
+                JScrollPane scrollPane = new JScrollPane(table);
 
                 // Check if table already exists
                 if(!isTableEmpty)
                 {
-                    window.getPanel().revalidate();
-                    window.getPanel().repaint();
+                    window.getPanel().validate();
+                    window.setVisible(true);
+                    in.close();
+                    System.out.println("Table updated");
                 }
                 else
                 {
                     // Create new table model with data from Project object
-                    JTable table = new JTable(model);
-                    JScrollPane scrollPane = new JScrollPane(table);
-
+                    System.out.println("Table created");
                     window.getPanel().add(scrollPane, BorderLayout.CENTER);
-                    window.getPanel().revalidate();
+                    window.getPanel().validate();
                     window.getPanel().repaint();
                     in.close();
 
@@ -110,7 +115,8 @@ public class ProjectHelper implements ActionListener {
         }
     }
 
-    public void saveProject(Project project) throws SecurityException{
+    public void saveProject(Project project) throws SecurityException
+    {
         File projectsDirectory = new File("Projects");
         if (!projectsDirectory.exists()) {
             var mkdir = projectsDirectory.mkdir();
@@ -126,6 +132,11 @@ public class ProjectHelper implements ActionListener {
             JOptionPane.showMessageDialog(window, "Project saved successfully");
         } catch (IOException i) {
             i.printStackTrace();
+        }
+        finally
+        {
+            // Then load project to table
+            loadProject(new File(projectsDirectory, project.getProjectTitle() +".ser"));
         }
     }
 }

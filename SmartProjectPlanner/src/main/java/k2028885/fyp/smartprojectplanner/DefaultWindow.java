@@ -71,6 +71,7 @@ public class DefaultWindow extends JFrame{
             {
                 File selectedFile = fileChooser.getSelectedFile();
                 helper.loadProject(selectedFile);
+                validate();
             }
         });
 

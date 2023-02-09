@@ -30,35 +30,16 @@ public class ProjectTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Project project = projects.get(rowIndex);
-        switch (columnIndex) {
-            case 0:
-                return project.getProjectTitle();
-            case 1:
-                return project.getProjectDescription();
-            case 2:
-                return project.getDeadline();
-            case 3:
-                return getTaskNames(project.getTasks());
-            default:
-                return "";
-        }
+        return switch (columnIndex) {
+            case 0 -> project.getProjectTitle();
+            case 1 -> project.getProjectDescription();
+            case 2 -> project.getDeadline();
+            case 3 -> getTaskNames(project.getTasks());
+            default -> "";
+        };
     }
 
     private String getTaskNames(List<Task> tasks) {
-        StringBuilder sb = new StringBuilder();
-        for (Task task : tasks) {
-            sb.append(task.getTaskName());
-            sb.append(", ");
-        }
-        if (sb.length() > 2) {
-            sb.delete(sb.length() - 2, sb.length());
-        }
-        return sb.toString();
-    }
-
-    public void addProject(Project project)
-    {
-        projects.add(project);
-        fireTableDataChanged();
+        return tasks.toString();
     }
 }

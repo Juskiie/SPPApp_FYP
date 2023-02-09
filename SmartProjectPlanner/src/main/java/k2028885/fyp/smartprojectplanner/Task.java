@@ -3,25 +3,20 @@ package k2028885.fyp.smartprojectplanner;
 import java.io.Serializable;
 
 public class Task implements Serializable {
-    private final String taskName;
-    private final int taskDuration;
-
-    public Task(String taskName, int taskDuration)
-    {
-        this.taskName = taskName;
-        this.taskDuration = taskDuration;
-    }
-
-    public Task(String taskName)
-    {
-        this.taskName = taskName;
-        this.taskDuration = 0;
-    }
+    private String taskName;
+    private int taskDuration;
 
     public Task()
     {
         this.taskName = "New task";
         this.taskDuration = 0;
+    }
+
+    public Task(String taskName, int taskDuration)
+    {
+        this();
+        this.taskName = taskName;
+        this.taskDuration = taskDuration;
     }
 
     public String getTaskName()
@@ -32,5 +27,11 @@ public class Task implements Serializable {
     public int getTaskDuration()
     {
         return taskDuration;
+    }
+
+    @Override
+    public String toString()
+    {
+        return taskName + ", " + taskDuration + " hours";
     }
 }
