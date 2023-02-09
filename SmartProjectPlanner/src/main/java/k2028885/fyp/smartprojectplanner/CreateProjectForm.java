@@ -1,10 +1,12 @@
 package k2028885.fyp.smartprojectplanner;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.toedter.calendar.JDateChooser;
 
 public class CreateProjectForm extends JFrame {
@@ -14,6 +16,21 @@ public class CreateProjectForm extends JFrame {
     private final JTextArea taskListArea;
     private final ProjectHelper helper = new ProjectHelper();
 
+    private Map<String, Integer> getTasksFromInput() throws ArrayIndexOutOfBoundsException{
+        Map<String, Integer> tasks = new HashMap<>();
+        String[] taskInputs = taskListArea.getText().split("\n");
+
+        for (String taskInput : taskInputs) {
+            Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            log.log(Level.INFO, taskInput);
+            String[] taskDetails = taskInput.split(" ");
+            String taskName = taskDetails[0];
+            int taskDuration = Integer.parseInt(taskDetails[1].replaceAll("[^0-9]", ""));
+            tasks.put(taskName, taskDuration);
+        }
+        return tasks;
+    }
+
     public CreateProjectForm()
     {
         // Set up the form components
@@ -21,7 +38,6 @@ public class CreateProjectForm extends JFrame {
         projectNameField.setVisible(true);
         projectDescriptionField = new JTextField();
         deadlineChooser = new JDateChooser();
-        // deadlineChooser.setDate(new Date());
         taskListArea = new JTextArea();
         taskListArea.setLineWrap(true);
         taskListArea.setWrapStyleWord(true);
@@ -31,7 +47,6 @@ public class CreateProjectForm extends JFrame {
 
         // Panel
         String[] labels = {"Project Name: ","Description: ","Deadline: ","Tasks: "};
-
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
@@ -72,6 +87,7 @@ public class CreateProjectForm extends JFrame {
         JLabel lTasks = new JLabel(labels[3], JLabel.TRAILING);
         lTasks.setLabelFor(taskListArea);
         lTasks.setOpaque(true);
+
         JPanel taskPanel = new JPanel();
         taskPanel.setLayout(new BorderLayout());
         taskPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
@@ -98,8 +114,6 @@ public class CreateProjectForm extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
-
-
         // Add action listeners for the buttons
         submitButton.addActionListener(e -> submit());
         cancelButton.addActionListener(e -> cancel());
@@ -111,7 +125,24 @@ public class CreateProjectForm extends JFrame {
         String projectName = projectNameField.getText();
         String projectDesc = projectDescriptionField.getText();
         Date deadline = deadlineChooser.getDate();
-        List<Task> tasks = parseTasks();
+
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("Task Description");
+        tableModel.addColumn("Duration");
+
+        // JTable taskTable = new JTable(tableModel);
+        ArrayList<Task> tasks = new ArrayList<>();
+        Map<String, Integer> map = getTasksFromInput();
+
+        for (var entry : map.entrySet())
+        {
+            tasks.add(new Task(entry.getKey(), entry.getValue()));
+        }
+
+        for (Task task : tasks)
+        {
+            tableModel.addRow(new Object[] { task.getTaskName(), task.getTaskDuration() });
+        }
 
         // Validate the values
         if(projectName.isEmpty())
@@ -126,6 +157,7 @@ public class CreateProjectForm extends JFrame {
         {
             tasks = new ArrayList<>();
         }
+
         Project proj = new Project(projectName,projectDesc,deadline,tasks);
         helper.saveProject(proj);
 
@@ -138,17 +170,5 @@ public class CreateProjectForm extends JFrame {
     {
         // Close the form
         setVisible(false);
-    }
-
-    private List<Task> parseTasks()
-    {
-        // Parse the task list from the text area
-        // ...
-        List<Task> tasks = new ArrayList<>();
-        String[] taskDescriptions = taskListArea.getText().split("\n");
-        for (String taskName : taskDescriptions) {
-            tasks.add(new Task(taskName));
-        }
-        return tasks;
     }
 }
