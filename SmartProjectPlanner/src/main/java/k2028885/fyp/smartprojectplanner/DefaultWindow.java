@@ -21,7 +21,6 @@ import java.util.logging.*;
  * @author L.Casey Bull
  */
 public class DefaultWindow extends JFrame{
-    // private final static Logger LOGGER =  Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private final JPanel panel = new JPanel();
 
     public JPanel getPanel() {
@@ -47,10 +46,7 @@ public class DefaultWindow extends JFrame{
         validate();
     }
 
-
-
-    private JMenuBar createMenuBar()
-    {
+    private JMenuBar createMenuBar() {
         ProjectHelper helper = new ProjectHelper(this);
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
@@ -67,13 +63,17 @@ public class DefaultWindow extends JFrame{
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
             fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             int returnValue = fileChooser.showOpenDialog(null);
-            if(returnValue == JFileChooser.APPROVE_OPTION)
-            {
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 helper.loadProject(selectedFile);
                 validate();
             }
         });
+
+        // SHOW HELP INFORMATION TO USER
+        JMenuItem showHelp = new JMenuItem("Help");
+        showHelp.addActionListener((ActionEvent e) -> helper.showHelp());
+        fileMenu.add(showHelp);
 
         fileMenu.add(loadProjectItem);
         menuBar.add(fileMenu);
@@ -99,6 +99,8 @@ public class DefaultWindow extends JFrame{
 
         // Create new window on load
         DefaultWindow frame = new DefaultWindow();
+        CalendarTaskPlanner taskPlanner = new CalendarTaskPlanner();
+        taskPlanner.setVisible(true);
         frame.setVisible(true);
     }
 }
