@@ -69,13 +69,13 @@ public class DefaultWindow extends JFrame{
                 validate();
             }
         });
+        fileMenu.add(loadProjectItem);
 
         // SHOW HELP INFORMATION TO USER
         JMenuItem showHelp = new JMenuItem("Help");
-        showHelp.addActionListener((ActionEvent e) -> helper.showHelp());
+        showHelp.addActionListener((ActionEvent e) -> ProjectHelper.showHelp());
         fileMenu.add(showHelp);
 
-        fileMenu.add(loadProjectItem);
         menuBar.add(fileMenu);
         return menuBar;
     }

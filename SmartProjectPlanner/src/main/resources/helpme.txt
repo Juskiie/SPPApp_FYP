@@ -1,0 +1,90 @@
+----==Helpful information==----
+
+--App info--
+Version: 0.9.2
+JDK Version: 19.0.2
+Author: L Casey Bull
+License: Standard MIT License
+Copyright: (c) 2023 Juskiie
+
+--What is this app for?--
+This is a project management planner app. It was developed as part of my university final
+year project, to help people with procrastination.
+With this app you can create project files, and have them display in a clean GUI.
+Then you can track all your projects in a simple calendar view, the application should automatically make a
+timetable for you and add those components to the tracker.
+The GUI Look and Feel was created by formdev.com as an open source Java Swing library,
+which you can check out here: https://www.formdev.com/flatlaf/
+
+Any issues contact me at: JuskieHusky@icloud.com
+
+--How to use--
+
+=The File Menu=
+The file menu has three options:
+    - Create a new project
+    - Load existing project
+    - Help (Which displays this in the GUI)
+
+1. Create a new project:
+This opens up a new form.
+Here, you can specify details about your project, including:
+    - Project title
+    - A brief description
+    - The deadline for the project
+    - Any tasks (and their duration) for the project
+
+Note: If any of these fields are left blank, then the app will add default values for those fields,
+which you can edit later in the GUI.
+
+Once you are finished entering the data for your project, simply click "Submit" to save the project.
+When saving, the app will try to, first check if a "Projects" directory exists, and if so, add your project file to
+that directory.
+If the directory does not exist, the app will try to create one, and then save the project file to the
+newly created directory.
+
+Upon successful project creation the data will be added to the main window in a table.
+
+2. Load an existing project
+This opens a file selection window.
+You can select either a directory (e.g. the Projects directory),
+or, an individual project file.
+Projects are saved in the ".ser" file format.
+This is a "serialized file", essentially, a stream of bytes for your project.
+Java interprets and deserializes these files as objects, so they can be read.
+
+This option should then (if it has access), load the project file(s) into the main gui table.
+
+3. Help
+Displays this!
+
+--Troubleshooting--
+This section contains information on how to resolve common errors/bugs with the app.
+For anything not listed here, please contact me directly.
+
+1. Security Exceptions
+This can occur when attempting to create new project files with the app.
+Should the user not have access to the directory the app is installed in, the app will throw a "Security Exception".
+There are two fixes for this:
+    - Move the application to a location the user has read/write access to, and run it again.
+    - Run the application as an Administrator (not recommended).
+
+2. IOExceptions / ClassNotFoundExceptions
+To understand these errors, a brief understanding of the underlying code is required.
+This application creates serialized files (.ser) for your projects when you create/save and load them.
+Each time an object is "Serialized", it is assigned a "Serial Version UID".
+This is a unique identifier that the JVM uses to compare versions for the class
+used to create your projects.
+(Essentially, the app makes sure this app was used to create those Project files).
+Embedded in the code to create objects the SerialVersionUID is hardcoded,
+and the only person who can change it is me (the developer).
+
+This means, the only time you will encounter either of these errors, is if:
+    - I changed the Serial Version UID (If I updated the app to change its functionality)
+    - The ".ser" file you are loading, was not created by this application. (Java doesn't know what to do with it)
+
+The only fix is, if the application gets updated, to recreate your projects in the new app.
+I will attempt to add a converter if possible.
+
+
+Any further questions, feel free to contact me using my information at the top of this page.

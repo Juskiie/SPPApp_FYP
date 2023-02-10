@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Scanner;
 
 public class ProjectHelper implements ActionListener, Serializable {
     @Serial
@@ -178,8 +179,7 @@ public class ProjectHelper implements ActionListener, Serializable {
         return new HashSet<>(project_list);
     }
 
-    public void showHelp()
-    {
+    public static void showHelp(){
         JFrame helpFrame = new JFrame();
         helpFrame.setTitle("Help");
         Toolkit tk = Toolkit.getDefaultToolkit();
@@ -191,9 +191,31 @@ public class ProjectHelper implements ActionListener, Serializable {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        helpFrame.add(panel);
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(true);
+        JScrollPane scrollPane = new JScrollPane(textArea);
 
-        helpFrame.pack();
-        helpFrame.validate();
+        try (Scanner reader = new Scanner(new File("helpme.txt")))
+        {
+            while(reader.hasNext())
+            {
+                String text = reader.nextLine();
+                textArea.append(text+"\n");
+            }
+        }
+        catch(FileNotFoundException e)
+        {
+            LOGGER.log(Level.WARNING, "Error: File 'helpme.txt' could not be found/accessed");
+            e.printStackTrace();
+        }
+        finally
+        {
+            textArea.setEditable(false);
+            panel.add(scrollPane);
+            helpFrame.add(panel);
+            helpFrame.pack();
+            helpFrame.validate();
+            helpFrame.setVisible(true);
+        }
     }
 }
