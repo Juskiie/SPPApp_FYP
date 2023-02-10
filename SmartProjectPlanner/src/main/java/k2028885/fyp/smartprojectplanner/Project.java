@@ -1,11 +1,14 @@
 package k2028885.fyp.smartprojectplanner;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Project implements Serializable {
+    @Serial
+    private static final long serialVersionUID  = 202888520288851234L; // This value must be declared so projects saved conform to this ID
     private String projectTitle;
     private String description;
     private Date deadline;
@@ -30,8 +33,6 @@ public class Project implements Serializable {
         this.tasks=tasks;
     }
 
-
-
     public String getProjectTitle() {
         return projectTitle;
     }
@@ -44,5 +45,11 @@ public class Project implements Serializable {
 
     public List<Task> getTasks() {
         return tasks;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Project title: " + projectTitle + ", Description: " + description + ", Deadline: " + deadline + ", Tasks: " + tasks.toString();
     }
 }

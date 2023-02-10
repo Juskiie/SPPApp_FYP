@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.List;
 
 import com.toedter.calendar.JDateChooser;
+import org.jetbrains.annotations.NotNull;
 
 public class CreateProjectForm extends JFrame {
     private final JTextField projectNameField;
@@ -17,6 +18,17 @@ public class CreateProjectForm extends JFrame {
 
     private List<Task> getTasksFromList(){
         return taskList;
+    }
+
+    private @NotNull JPanel createPanel(JLabel lab, JComponent component) {
+        lab.setLabelFor(component);
+        lab.setOpaque(true);
+        JPanel newPanel = new JPanel();
+        newPanel.setLayout(new BorderLayout());
+        newPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
+        newPanel.add(lab, BorderLayout.WEST);
+        newPanel.add(component, BorderLayout.CENTER);
+        return newPanel;
     }
 
     public CreateProjectForm()
@@ -31,42 +43,18 @@ public class CreateProjectForm extends JFrame {
         JButton cancelButton = new JButton("Cancel");
 
         // Panel
-        String[] labels = {"Project Name: ","Description: ","Deadline: ","Tasks: "};
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 
         // Set project name label and panel for components
-        JLabel lName = new JLabel(labels[0], JLabel.TRAILING);
-        lName.setLabelFor(projectNameField);
-        lName.setOpaque(true);
-        JPanel namePanel = new JPanel();
-        namePanel.setLayout(new BorderLayout());
-        namePanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
-        namePanel.add(lName, BorderLayout.WEST);
-        namePanel.add(projectNameField, BorderLayout.CENTER);
-        p.add(namePanel);
+        String[] labels = {"Project Name: ", "Description: ", "Deadline: ", "Tasks: "};
+        p.add(createPanel(new JLabel(labels[0], JLabel.TRAILING), projectNameField));
 
         // Set project description label and panel for components
-        JLabel lDesc = new JLabel(labels[1], JLabel.TRAILING);
-        lDesc.setLabelFor(projectDescriptionField);
-        lDesc.setOpaque(true);
-        JPanel descPanel = new JPanel();
-        descPanel.setLayout(new BorderLayout());
-        descPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
-        descPanel.add(lDesc, BorderLayout.WEST);
-        descPanel.add(projectDescriptionField, BorderLayout.CENTER);
-        p.add(descPanel);
+        p.add(createPanel(new JLabel(labels[1], JLabel.TRAILING), projectDescriptionField));
 
         // Set project deadline label and panel for components
-        JLabel lDeadline = new JLabel(labels[2], JLabel.TRAILING);
-        lDeadline.setLabelFor(deadlineChooser);
-        lDeadline.setOpaque(true);
-        JPanel deadlinePanel = new JPanel();
-        deadlinePanel.setLayout(new BorderLayout());
-        deadlinePanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
-        deadlinePanel.add(lDeadline, BorderLayout.WEST);
-        deadlinePanel.add(deadlineChooser, BorderLayout.CENTER);
-        p.add(deadlinePanel);
+        p.add(createPanel(new JLabel(labels[2], JLabel.TRAILING), deadlineChooser));
 
         // NEW CODE HERE -------------------------------------------------------------------------------------------------------------------------------
         JTextField taskNameField = new JTextField(5);
@@ -121,7 +109,7 @@ public class CreateProjectForm extends JFrame {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
-        descPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+
         buttonPanel.add(submitButton);
         buttonPanel.add(cancelButton);
 

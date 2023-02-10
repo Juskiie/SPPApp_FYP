@@ -51,5 +51,11 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 			<artifactId>flatlaf</artifactId>
 			<version>3.0</version>
 		</dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.0.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>
