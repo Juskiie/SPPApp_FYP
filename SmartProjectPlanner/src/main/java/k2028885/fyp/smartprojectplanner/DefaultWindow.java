@@ -15,13 +15,19 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.*;
+import java.util.ArrayList;
 
 /**
  *
  * @author L.Casey Bull
  */
-public class DefaultWindow extends JFrame{
+public class DefaultWindow extends JFrame implements informativeOutput{
+    private static ArrayList<Object> instances;
     private final JPanel panel = new JPanel();
+    private String title;
+    private Toolkit tk;
+    private Dimension d;
+    boolean resizeable;
 
     public JPanel getPanel() {
         return panel;
@@ -42,8 +48,16 @@ public class DefaultWindow extends JFrame{
         panel.setLayout(new BorderLayout());
         add(panel);
         setJMenuBar(createMenuBar());
-
         validate();
+    }
+
+    public DefaultWindow(String title, Toolkit tk, Dimension d, boolean resizeable) throws HeadlessException
+    {
+        this();
+        this.title = title;
+        this.tk = tk;
+        this.d = d;
+        this.resizeable = resizeable;
     }
 
     private JMenuBar createMenuBar() {
@@ -79,8 +93,18 @@ public class DefaultWindow extends JFrame{
         menuBar.add(fileMenu);
         return menuBar;
     }
+    
+    @Override
+    public ArrayList<Object> getAllChildObjects()
+    {
+        return instances;
+    }
 
     // Start execution here: pass args..
+    /*
+     * Argument list:
+     * "-v" -> Display debugging info
+     */
     public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException
     {
         // Set up logging
@@ -99,8 +123,10 @@ public class DefaultWindow extends JFrame{
 
         // Create new window on load
         DefaultWindow frame = new DefaultWindow();
+        instances.add(frame);
         CalendarTaskPlanner taskPlanner = new CalendarTaskPlanner();
         taskPlanner.setVisible(true);
         frame.setVisible(true);
+        System.out.println(frame.getSize());
     }
 }

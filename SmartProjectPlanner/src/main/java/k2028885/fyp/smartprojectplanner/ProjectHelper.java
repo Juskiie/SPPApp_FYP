@@ -132,7 +132,8 @@ public class ProjectHelper implements ActionListener, Serializable {
             System.err.println("Error: Invalid class exception");
             System.err.println("The file you have tried to load is likely for a different version of this application, and therefore cannot be read.");
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             System.out.println("File directory is empty!");
             e.printStackTrace();
         }
