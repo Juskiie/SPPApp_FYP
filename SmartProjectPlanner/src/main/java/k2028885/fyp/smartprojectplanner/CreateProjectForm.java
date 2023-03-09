@@ -65,7 +65,7 @@ public class CreateProjectForm extends JFrame {
 
         // Add action listener to update task list on adding task
         addTaskButton.addActionListener(e -> {
-            Task task = new Task(taskNameField.getText(), (Integer) taskDurationSpinner.getValue());
+            Task task = new Task(taskNameField.getText(), (Byte) taskDurationSpinner.getValue());
             taskListModel.addElement(task.toString());
             taskList.add(task);
         });
@@ -117,7 +117,7 @@ public class CreateProjectForm extends JFrame {
         p.setVisible(true);
 
         // Add the components to the form and load gui
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         add(new JLabel("TEST"));
         add(p);
         repaint();

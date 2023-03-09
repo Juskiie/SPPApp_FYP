@@ -46,10 +46,8 @@ public class ProjectHelper implements ActionListener, Serializable {
         if (e.getSource() == window) createProject();
     }       // Check main window called this method, otherwise do nothing
 
-    public void createProject()
-    {
-        new CreateProjectForm();
-    }
+
+    public void createProject() { new CreateProjectForm(); }
 
     // Simple method that checks if file is a directory
     public boolean isDirectory(File file) {
@@ -174,12 +172,19 @@ public class ProjectHelper implements ActionListener, Serializable {
         }
     }
 
+    /**
+     * Calling this method returns all loaded project files in memory.
+     * @return The current project list as a hash set
+     */
     public static Set<Project> getAllProjectsInTable()
     {
         // No project should exist twice, return as set
         return new HashSet<>(project_list);
     }
 
+    /**
+     * Loads the helpme.txt file in a new window when called.
+     */
     public static void showHelp(){
         JFrame helpFrame = new JFrame();
         helpFrame.setTitle("Help");
@@ -187,7 +192,7 @@ public class ProjectHelper implements ActionListener, Serializable {
         Dimension d = tk.getScreenSize();
         helpFrame.setSize(d.width/2, d.height/2); // Set window size to half screen res
         helpFrame.setLocationRelativeTo(null); // Set window location to screen centre
-        helpFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Allow the application to be closed
+        helpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Allow the application to be closed
         helpFrame.setResizable(true);
 
         JPanel panel = new JPanel();

@@ -15,19 +15,13 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.*;
-import java.util.ArrayList;
 
 /**
  *
  * @author L.Casey Bull
  */
-public class DefaultWindow extends JFrame implements informativeOutput{
-    private static ArrayList<Object> instances;
+public class DefaultWindow extends JFrame {
     private final JPanel panel = new JPanel();
-    private String title;
-    private Toolkit tk;
-    private Dimension d;
-    boolean resizeable;
 
     public JPanel getPanel() {
         return panel;
@@ -51,14 +45,6 @@ public class DefaultWindow extends JFrame implements informativeOutput{
         validate();
     }
 
-    public DefaultWindow(String title, Toolkit tk, Dimension d, boolean resizeable) throws HeadlessException
-    {
-        this();
-        this.title = title;
-        this.tk = tk;
-        this.d = d;
-        this.resizeable = resizeable;
-    }
 
     private JMenuBar createMenuBar() {
         ProjectHelper helper = new ProjectHelper(this);
@@ -85,6 +71,12 @@ public class DefaultWindow extends JFrame implements informativeOutput{
         });
         fileMenu.add(loadProjectItem);
 
+        // LOAD CALENDAR TASK PLANNER/SCHEDULER
+        JMenuItem showProjectScheduler = new JMenuItem("Open project planner view");
+        showProjectScheduler.addActionListener((ActionEvent e) -> new CalendarTaskPlanner().setVisible(true));
+        fileMenu.add(showProjectScheduler);
+
+
         // SHOW HELP INFORMATION TO USER
         JMenuItem showHelp = new JMenuItem("Help");
         showHelp.addActionListener((ActionEvent e) -> ProjectHelper.showHelp());
@@ -92,12 +84,6 @@ public class DefaultWindow extends JFrame implements informativeOutput{
 
         menuBar.add(fileMenu);
         return menuBar;
-    }
-    
-    @Override
-    public ArrayList<Object> getAllChildObjects()
-    {
-        return instances;
     }
 
     // Start execution here: pass args..
@@ -123,10 +109,10 @@ public class DefaultWindow extends JFrame implements informativeOutput{
 
         // Create new window on load
         DefaultWindow frame = new DefaultWindow();
-        instances.add(frame);
-        CalendarTaskPlanner taskPlanner = new CalendarTaskPlanner();
-        taskPlanner.setVisible(true);
         frame.setVisible(true);
-        System.out.println(frame.getSize());
+
+        Runtime runtime = Runtime.getRuntime();
+        long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Used Memory at runtime:" + usedMemoryBefore);
     }
 }

@@ -27,7 +27,7 @@ public class CalendarTaskPlanner extends JFrame {
     public CalendarTaskPlanner() {
         setTitle("Task Planner");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
         JCalendar calendar = new JCalendar();
@@ -85,7 +85,6 @@ public class CalendarTaskPlanner extends JFrame {
         System.out.println();
         List<Project> projectsOut = new ArrayList<>();
         ProjectHelper.LOGGER.log(Level.INFO, "Method 'retrieveProjectsForDate' called with parameter ["+selectedDate.toString()+"] of type 'Date'");
-        // Date formattedDeadline = formatDate(projectsOut.getDeadline());
         for(Project project : projectsIn)
         {
             if (formatDate(project.getDeadline()).equals(formatDate(selectedDate)))

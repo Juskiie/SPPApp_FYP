@@ -22,22 +22,6 @@ public class Task implements Serializable {
         this.taskDuration = taskDuration;
     }
 
-    public String getTaskName() {
-        return taskName;
-    }
-
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
-    public int getTaskDuration() {
-        return taskDuration;
-    }
-
-    public void setTaskDuration(int taskDuration) {
-        this.taskDuration = taskDuration;
-    }
-
     @Override
     public String toString()
     {

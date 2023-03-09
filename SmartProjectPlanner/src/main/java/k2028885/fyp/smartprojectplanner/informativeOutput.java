@@ -2,9 +2,11 @@ package k2028885.fyp.smartprojectplanner;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("all")
 public interface informativeOutput {
-    static ArrayList<Object> instances = new ArrayList();
+    ArrayList<Object> instances = new ArrayList<>();
 
-    ArrayList<Object> getAllChildObjects();
-
+    static ArrayList<Object> getAllChildObjects() {
+        return null;
+    }
 }
