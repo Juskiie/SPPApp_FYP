@@ -27,7 +27,7 @@ public class ProjectHelper implements ActionListener, Serializable {
     public static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);    // Set up global logger
     private DefaultWindow window;                                                       // Store instance of main window
     private static final List<Project> project_list = new ArrayList<>();                // Used when constructing table of projects
-    private boolean isTableEmpty = true; // Boolean used to prevent table from being drawn more than once
+    private boolean isTableEmpty = true;                                                // Boolean used to prevent table from being drawn more than once
     private static ProjectHelper instance;
 
     /**

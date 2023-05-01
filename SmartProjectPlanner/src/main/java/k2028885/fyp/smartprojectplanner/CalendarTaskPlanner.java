@@ -120,7 +120,7 @@ public class CalendarTaskPlanner extends JFrame implements GUIComponent {
         return projectsOut;
     }
 
-    private String formatDate(Date date)
+    private @NotNull String formatDate(Date date)
     {
         return simpleDateFormat.format(date);
     }

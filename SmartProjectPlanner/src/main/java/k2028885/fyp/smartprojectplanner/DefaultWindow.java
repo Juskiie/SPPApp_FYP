@@ -105,8 +105,6 @@ public class DefaultWindow extends JFrame implements GUIComponent {
         }
     }
 
-    // Start execution here
-
     /**
      * Main method; code execution begins here.
      * Sets up logging, enables "look and feel" theme for GUI, and instantiates required classes
@@ -152,6 +150,7 @@ public class DefaultWindow extends JFrame implements GUIComponent {
             }
         }
 
+        // Used while debugging, can be removed
         Runtime runtime = Runtime.getRuntime();
         long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
         System.out.println("Used Memory at runtime:" + usedMemoryBefore);
