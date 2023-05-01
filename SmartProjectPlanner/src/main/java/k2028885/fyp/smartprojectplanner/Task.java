@@ -3,6 +3,9 @@ package k2028885.fyp.smartprojectplanner;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * A class that represents a task in a project. Tasks have a name and a duration, represented as a number of hours.
+ */
 public class Task implements Serializable {
     @Serial
     private static final long serialVersionUID  = 202888520288851234L; // This value must be declared so projects saved conform to this ID
@@ -35,6 +38,10 @@ public class Task implements Serializable {
         return taskDuration;
     }
 
+    /**
+     * Returns a string representation of the task, including its name and duration.
+     * @return A string representation of the task.
+     */
     @Override
     public String toString()
     {

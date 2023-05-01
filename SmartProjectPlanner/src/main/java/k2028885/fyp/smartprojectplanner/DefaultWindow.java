@@ -10,11 +10,15 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+/**
+ * This is the DefaultWindow class.
+ * It extends the JFrame class and implements the GUIComponent interface.
+ * It is responsible for creating and displaying the main window of the application.
+ */
 public class DefaultWindow extends JFrame implements GUIComponent {
     private final JPanel panel = new JPanel();
     private static DefaultWindow instance;

@@ -16,6 +16,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
+/**
+ * This class represents a graphical user interface for a task planner that displays tasks in a table based on their deadline date.
+ * The class extends the JFrame class and implements the GUIComponent interface.
+ * The table displays project title, description, deadline, and tasks associated with the project.
+ * The class also contains a CalendarChangeListener inner class that updates the table data based on the selected calendar date.
+ */
 public class CalendarTaskPlanner extends JFrame implements GUIComponent {
     private JTable taskTable;
     private final String stringPattern = "dd-MM-yyyy";

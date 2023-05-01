@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The Project class represents a project, which contains a title, description, deadline, and a list of tasks.
+ * It implements Serializable to allow for saving to file.
+ */
 public class Project implements Serializable {
     @Serial
     private static final long serialVersionUID  = 202888520288851234L; // This value must be declared so projects saved conform to this ID
@@ -65,7 +69,7 @@ public class Project implements Serializable {
 
     /**
      * Gets all tasks from the project as a list.
-     * @return List<Task>
+     * @return List of Tasks
      */
     public List<Task> getTasks() {
         return tasks;
@@ -89,7 +93,7 @@ public class Project implements Serializable {
 
     /**
      * Sorts the task list of a project by duration, from longest to shortest.
-     * @return List<Task>
+     * @return List of Tasks
      */
     public List<Task> getFormattedTaskList()
     {

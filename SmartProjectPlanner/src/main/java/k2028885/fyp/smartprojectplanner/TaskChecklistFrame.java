@@ -5,6 +5,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The TaskChecklistFrame class represents a frame used to display and manage a project's tasks using checkboxes.
+ * It extends JFrame and implements the GUIComponent interface.
+ */
 public class TaskChecklistFrame extends JFrame implements GUIComponent {
     private final Project project;
     private final ArrayList<JCheckBox> checkboxes = new ArrayList<>();

@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The CreateProjectForm class represents a form used to create a new project with associated tasks.
+ * It extends JFrame and implements the GUIComponent interface.
+ */
 public class CreateProjectForm extends JFrame implements GUIComponent {
     private JTextField projectNameField;
     private JTextField projectDescriptionField;

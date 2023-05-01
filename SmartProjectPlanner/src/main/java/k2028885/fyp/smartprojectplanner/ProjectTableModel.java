@@ -5,6 +5,12 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * This class extends the AbstractTableModel class, and represents the table model for Projects in the main project table.
+ * It takes a project list to model the table for, and implements methods for getting the row count, column count, column name,
+ * and value at a given cell.
+ * Additionally, it contains a helper method to format task lists as strings.
+ */
 public class ProjectTableModel extends AbstractTableModel {
 
     private final List<Project> projects;
