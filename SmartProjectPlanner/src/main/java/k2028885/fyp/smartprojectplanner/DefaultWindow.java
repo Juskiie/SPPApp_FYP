@@ -1,6 +1,5 @@
 package k2028885.fyp.smartprojectplanner;
 
-
 import com.formdev.flatlaf.FlatDarkLaf;
 import org.jetbrains.annotations.NotNull;
 
