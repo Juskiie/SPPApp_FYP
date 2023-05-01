@@ -1,5 +1,7 @@
 package k2028885.fyp.smartprojectplanner;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
@@ -8,6 +10,10 @@ public class ProjectTableModel extends AbstractTableModel {
     private final List<Project> projects;
     private final String[] columnNames = {"Title", "Description", "Deadline", "Tasks"};
 
+    /**
+     * Takes a project list to model the table for.
+     * @param projects The projects to be loaded into the table, as a List.
+     */
     public ProjectTableModel(List<Project> projects) {
         this.projects = projects;
     }
@@ -39,7 +45,12 @@ public class ProjectTableModel extends AbstractTableModel {
         };
     }
 
-    private String getTaskNames(List<Task> tasks) {
+    /**
+     * Takes the task list of a Project and returns them as a string.
+     * @param tasks The tasks of a chosen Project, as a List.
+     * @return Task list as a String
+     */
+    private String getTaskNames(@NotNull List<Task> tasks) {
         return tasks.toString();
     }
 }

@@ -1,53 +1,63 @@
 package k2028885.fyp.smartprojectplanner;
 
 
-import java.awt.BorderLayout;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.logging.Level;
-import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JCalendar;
 import org.jetbrains.annotations.NotNull;
 
-public class CalendarTaskPlanner extends JFrame {
-    private final JTable taskTable;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+
+public class CalendarTaskPlanner extends JFrame implements GUIComponent {
+    private JTable taskTable;
     private final String stringPattern = "dd-MM-yyyy";
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(stringPattern) ;
 
-    /*
+    /**
      * Default constructor for task planner.
-     * Never has to change parameters (currently)
+     * Never has to change parameters (currently).
      */
-
     public CalendarTaskPlanner() {
-        setTitle("Task Planner");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout());
+        createAndShowGUI();
+    }
 
+    @Override
+    public void initComponents() {
         JCalendar calendar = new JCalendar();
         calendar.addPropertyChangeListener("calendar", new CalendarChangeListener());
 
         taskTable = new JTable();
-        taskTable.setModel(new DefaultTableModel(new Object[]{"Project", "Task", "Deadline","Tasks"}, 0)); // NOTE: TO-DO: Change "Duration" to start time and end time.
+        taskTable.setModel(new DefaultTableModel(new Object[]{"Project", "Description", "Deadline","Tasks"}, 0)); // NOTE: TO-DO: Change "Duration" to start time and end time.
 
         add(calendar, BorderLayout.WEST);
         add(new JScrollPane(taskTable), BorderLayout.CENTER);
+    }
 
+    @Override
+    public void createAndShowGUI() {
+        setTitle("Task Planner");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+        initComponents();
         setVisible(true);
     }
 
-    /*
-     * 1. Override implement PropertyChangeListener interface
-     * 2. Override propertyChange method to support Calendar cell updates
-     * 3. Get new changed value of calendar cell for selected date
-     * 4. Assign a new var with all project tasks
-     * 5. Generate a new table for the chosen date
+    @Override
+    public void setDefaultWindow(DefaultWindow window) {
+    }
+
+    /**
+     * Inner-class of CalendarTaskPlanner which enables calendar cell updates.
      */
     private class CalendarChangeListener implements PropertyChangeListener {
         @Override
@@ -74,6 +84,12 @@ public class CalendarTaskPlanner extends JFrame {
      * 2. Get all tasks associated with projects from window
      * 3. Parse data to local vars for use in calendar view
      * 4. Return this list to caller
+     */
+
+    /**
+     * Scans currently loaded project list for projects matching the passed date, and returns them as a List
+     * @param selectedDate The date to find projects for (based on deadline).
+     * @return A list of project files
      */
     private @NotNull List<Project> retrieveProjectsForDate(Date selectedDate) {
         // Code to retrieve the tasks for the selected date from the database or file.

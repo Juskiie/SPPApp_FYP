@@ -15,6 +15,11 @@ public class Task implements Serializable {
         this.taskDuration = 0;
     }
 
+    /**
+     * Fully parameterized constructor for Task objects
+     * @param taskName Name of the task
+     * @param taskDuration Duration, in hours, of the task
+     */
     public Task(String taskName, int taskDuration)
     {
         this();
@@ -22,9 +27,17 @@ public class Task implements Serializable {
         this.taskDuration = taskDuration;
     }
 
+    /**
+     * This retrieves the duration of the current task, in hours.
+     * @return The duration of the task in hours, as an integer,
+     */
+    public int getDuration() {
+        return taskDuration;
+    }
+
     @Override
     public String toString()
     {
-        return "[ Task: "+taskName + ", " + "Duration: " +taskDuration + " hours ]";
+        return " Task: " + taskName + ", " + "Duration: " + taskDuration + " hours ";
     }
 }

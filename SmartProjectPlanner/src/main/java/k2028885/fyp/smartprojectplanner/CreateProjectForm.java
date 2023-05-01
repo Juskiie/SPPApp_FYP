@@ -1,25 +1,31 @@
 package k2028885.fyp.smartprojectplanner;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.util.List;
-
 import com.toedter.calendar.JDateChooser;
 import org.jetbrains.annotations.NotNull;
 
-public class CreateProjectForm extends JFrame {
-    private final JTextField projectNameField;
-    private final JTextField projectDescriptionField;
-    private final JDateChooser deadlineChooser;
-    private final List<Task> taskList = new ArrayList<>();
-    private final ProjectHelper helper = new ProjectHelper();
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+public class CreateProjectForm extends JFrame implements GUIComponent {
+    private JTextField projectNameField;
+    private JTextField projectDescriptionField;
+    private JDateChooser deadlineChooser;
+    private final List<Task> taskList = new ArrayList<>();
+    private final ProjectHelper helper = ProjectHelper.getInstance();
 
     private List<Task> getTasksFromList(){
         return taskList;
     }
 
+    /**
+     * Takes a label and a type of component, then generates a panel for it.
+     * @param lab The panel's label.
+     * @param component The type of component for the panel to contain
+     * @return The completed JPanel
+     */
     private @NotNull JPanel createPanel(JLabel lab, JComponent component) {
         lab.setLabelFor(component);
         lab.setOpaque(true);
@@ -31,9 +37,53 @@ public class CreateProjectForm extends JFrame {
         return newPanel;
     }
 
+    /**
+     * Calls the initComponents method to initialize the components,
+     * then, adds to the frame and sets visibility to true.
+     */
     public CreateProjectForm()
     {
         // Set up the form components
+        initComponents();
+        createAndShowGUI();
+    }
+
+    private void submit()
+    {
+        // Get the values from the form
+        String projectName = projectNameField.getText();        // Project name
+        String projectDesc = projectDescriptionField.getText(); // Project description
+        Date deadline = deadlineChooser.getDate();              // Project deadline
+        List<Task> tasksFromList = getTasksFromList();          // Task list
+        System.out.println(tasksFromList);
+
+        // Validate the values
+        if(projectName.isEmpty())
+        {
+            projectName = "New Project";
+        }
+        if(projectDesc.isEmpty())
+        {
+            projectDesc = "This is a new project";
+        }
+
+        // Save the project to file
+        Project proj = new Project(projectName,projectDesc,deadline,tasksFromList);
+        helper.saveProject(proj);
+
+        // Close the form
+        setVisible(false);
+
+    }
+
+    private void cancel()
+    {
+        // Close the form
+        setVisible(false);
+    }
+
+    @Override
+    public void initComponents() {
         projectNameField = new JTextField();
         projectNameField.setVisible(true);
         projectDescriptionField = new JTextField();
@@ -65,7 +115,7 @@ public class CreateProjectForm extends JFrame {
 
         // Add action listener to update task list on adding task
         addTaskButton.addActionListener(e -> {
-            Task task = new Task(taskNameField.getText(), (Byte) taskDurationSpinner.getValue());
+            Task task = new Task(taskNameField.getText(), (Integer) taskDurationSpinner.getValue());
             taskListModel.addElement(task.toString());
             taskList.add(task);
         });
@@ -116,52 +166,25 @@ public class CreateProjectForm extends JFrame {
         p.add(buttonPanel);
         p.setVisible(true);
 
-        // Add the components to the form and load gui
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         add(new JLabel("TEST"));
         add(p);
-        repaint();
-        // validate();
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
 
         // Add action listeners for the buttons
         submitButton.addActionListener(e -> submit());
         cancelButton.addActionListener(e -> cancel());
     }
 
-    private void submit()
-    {
-        // Get the values from the form
-        String projectName = projectNameField.getText();        // Project name
-        String projectDesc = projectDescriptionField.getText(); // Project description
-        Date deadline = deadlineChooser.getDate();              // Project deadline
-        List<Task> tasksFromList = getTasksFromList();          // Task list
-        System.out.println(tasksFromList);
-
-        // Validate the values
-        if(projectName.isEmpty())
-        {
-            projectName = "New Project";
-        }
-        if(projectDesc.isEmpty())
-        {
-            projectDesc = "This is a new project";
-        }
-
-        // Save the project to file
-        Project proj = new Project(projectName,projectDesc,deadline,tasksFromList);
-        helper.saveProject(proj);
-
-        // Close the form
-        setVisible(false);
-
+    @Override
+    public void createAndShowGUI() {
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        pack();
     }
 
-    private void cancel()
-    {
-        // Close the form
-        setVisible(false);
+    @Override
+    public void setDefaultWindow(DefaultWindow window) {
     }
 }

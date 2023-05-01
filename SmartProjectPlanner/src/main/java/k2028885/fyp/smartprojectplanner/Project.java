@@ -23,7 +23,13 @@ public class Project implements Serializable {
         this.tasks = new ArrayList<>();
     }
 
-    // Fully Parametrised Constructor
+    /**
+     *
+     * @param projectTitle String value for the title of the project
+     * @param description String value for the description of the project
+     * @param deadline Date value for the deadline of the project
+     * @param tasks List of tasks for the project
+     */
     public Project(String projectTitle,String description, Date deadline, List<Task> tasks)
     {
         this();
@@ -33,18 +39,65 @@ public class Project implements Serializable {
         this.tasks=tasks;
     }
 
+    /**
+     * Gets the title field of the project.
+     * @return projectTitle
+     */
     public String getProjectTitle() {
         return projectTitle;
     }
 
-    public String getProjectDescription() { return description; }
+    /**
+     * Gets the description field of the project.
+     * @return description
+     */
+    public String getProjectDescription() {
+        return description;
+    }
 
+    /**
+     * Returns the deadline (Date) of the current project.
+     * @return deadline
+     */
     public Date getDeadline() {
         return deadline;
     }
 
+    /**
+     * Gets all tasks from the project as a list.
+     * @return List<Task>
+     */
     public List<Task> getTasks() {
         return tasks;
+    }
+
+    /**
+     * Sets the tasks for the project.
+     * @param tasks The list of tasks
+     */
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    /**
+     * Sets the title of the project.
+     * @param title The project title
+     */
+    public void setProjectTitle(String title) {
+        this.projectTitle = title;
+    }
+
+    /**
+     * Sorts the task list of a project by duration, from longest to shortest.
+     * @return List<Task>
+     */
+    public List<Task> getFormattedTaskList()
+    {
+        List<Task> sortedTasks = new ArrayList<>(this.tasks);
+
+        sortedTasks.sort((task1, task2) -> Integer.compare(task2.getDuration(), task1.getDuration()));
+
+        return sortedTasks;
     }
 
     @Override
